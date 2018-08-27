@@ -1,6 +1,6 @@
 ---
 title: Hyperledger Fabric and Composer on Docker Swarm
-date: 2018-08-26
+date: 2018-08-27
 author: Alfonso Harita
 author_id: aharita
 tags:
@@ -24,7 +24,7 @@ I highly recommend to follow the tutorials on each technology first to get famil
 ## Network Distribution
 The network consists on two nodes, which name and purpose are described below.
 
-##### hyperledger0
+### hyperledger0
 * Certificate Authority
   * Registration of identities, certificates management
 * Orderer
@@ -35,7 +35,7 @@ The network consists on two nodes, which name and purpose are described below.
   * You will have a CouchDB server paired for every Peer Node
   * Database server where the ledger is stored
 
-##### hyperledger1
+### hyperledger1
 * Peer1
 * CouchDB
 
@@ -136,7 +136,7 @@ docker swarm join --token {YOUR-UNIQUE-TOKEN} hyperledger0:2377
 ## hyperledger0 components
 Don't forget to run the commands inside the `Build-Multi-Host-Network-Hyperledger` folder. You are going to run this on a new tab for the same hyperledger0 server.
 
-##### CA - Certificate Authority
+### CA - Certificate Authority
 There is one file key name that you need to copy and replace on the command, you can check that by running `ls -la ~/Build-Multi-Host-Network-Hyperledger/crypto-config/peerOrganizations/org1.example.com/ca`
 
 ```bash
@@ -149,7 +149,7 @@ docker run --rm -it --network="sample-network" --name ca.example.com -p 7054:705
 sh -c 'fabric-ca-server start -b admin:adminpw -d'
 ```
 
-##### Orderer
+### Orderer
 
 ```bash
 docker run --rm -it --network="sample-network" --name orderer.example.com -p 7050:7050 \
@@ -163,14 +163,14 @@ docker run --rm -it --network="sample-network" --name orderer.example.com -p 705
 -w /opt/gopath/src/github.com/hyperledger/fabric hyperledger/fabric-orderer:1.1.0 orderer
 ```
 
-##### CouchDB
+### CouchDB
 
 ```bash
 docker run --rm -it --network="sample-network" --name couchdb0 -p 5984:5984 -e COUCHDB_USER= \
 -e COUCHDB_PASSWORD= -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=sample-network hyperledger/fabric-couchdb:0.4.10
 ```
 
-##### Peer0
+### Peer0
 
 ```bash
 docker run --rm -it --link orderer.example.com:orderer.example.com --network="sample-network" \
@@ -192,14 +192,14 @@ docker run --rm -it --link orderer.example.com:orderer.example.com --network="sa
 ## hyperledger1 components
 Don't forget to run the commands inside the `Build-Multi-Host-Network-Hyperledger` folder. You are going to run this on a new tab for the same hyperledger1 server.
 
-##### CouchDB
+### CouchDB
 
 ```bash
 docker run --rm -it --network="sample-network" --name couchdb1 -p 6984:5984 -e COUCHDB_USER= \
 -e COUCHDB_PASSWORD= -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=sample-network hyperledger/fabric-couchdb:0.4.10
 ```
 
-##### Peer1
+### Peer1
 
 ```bash
 docker run --rm -it --network="sample-network" --link orderer.example.com:orderer.example.com \
@@ -241,7 +241,7 @@ docker run --rm -it --network="sample-network" --name cli \
 -w /opt/gopath/src/github.com/hyperledger/fabric/peer hyperledger/fabric-tools:1.1.0 /bin/bash -c './scripts/script.sh'
 ```
 
-## Hyperledger Composer Sample
+## Hyperledger Composer
 Finally, we're ready for installing a Hyperledger Composer application on our running Hyperledger Fabric network
 
 Run on hyperledger0
@@ -256,7 +256,7 @@ cd tutorial-network
 composer archive create -t dir -n .
 ```
 
-##### Connection
+### Connection
 We need to create a `connection.json` file that contains the configuration for all the servers (CA, Orderer, Peers) to be reachable by our Hyperledger Composer identity card and application.
 
 Please update the values as necessary.
@@ -320,7 +320,7 @@ Please update the values as necessary.
 }
 ```
 
-##### Installing Business Network
+### Installing Business Network
 Replace the file key name, similar to what we did for the Certificate Authority server
 
 ```bash
